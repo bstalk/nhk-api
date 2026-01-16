@@ -45,6 +45,100 @@ class ProgramGuideV3(object):
         )
         return url
 
+    def pg_date_tv(self, area, service, date):
+        """Returns tv programs with the specified area, service and date.
+
+        :param area: The area ID or name of the broadcasting area.
+        :type area: str
+        :param service: The service ID or name of the broadcasting
+            station.
+        :type service: str
+        :param date: Specifies the broadcasting date.
+        :type date: datetime.date
+        """
+        area = AreaChoices.detect(area).code
+        service = ServiceChoices.detect(service).code
+        query_params = {
+            'service': service, 
+            'area': area,
+            'date': self._to_ymd(date),
+            'key': self.api_key,
+        }
+        url = self._build_url('papiPgDateTv', query_params)
+
+        response = requests.get(url)
+
+        return response.json()
+    
+    def pg_genre_tv(self, area, service, genre, date):
+        """Returns tv programs with the specified area, service, genre
+        and date.
+
+        :param area: The area ID or name of the broadcasting area.
+        :type area: str
+        :param service: The service ID or name of the broadcasting
+            station.
+        :type service: str
+        :param genre: The genre ID or name of the genre code.
+        :type genre: str
+        :param date: Specifies the broadcasting date.
+        :type date: datetime.date
+        """
+        area = AreaChoices.detect(area).code
+        service = ServiceChoices.detect(service).code
+        genre = GenreChoices.detect(genre).code
+        query_params = {
+            'service': service, 
+            'area': area,
+            'genre': genre,
+            'date': self._to_ymd(date),
+            'key': self.api_key,
+        }
+        url = self._build_url('papiPgGenreTv', query_params)
+
+        response = requests.get(url)
+
+        return response.json()
+
+    def pg_now_tv(self, area, service):
+        """Returns tv programs that is broadcasting now.
+
+        :param area: The area ID or name of the broadcasting area.
+        :type area: str
+        :param service: The service ID or name of the broadcasting
+            station.
+        :type service: str
+        """
+        area = AreaChoices.detect(area).code
+        service = ServiceChoices.detect(service).code
+        query_params = {
+            'service': service, 
+            'area': area,
+            'key': self.api_key,
+        }
+        url = self._build_url('papiPgNowTv', query_params)
+
+        response = requests.get(url)
+
+        return response.json()
+
+    def broadcast_event_tv(self, broadcast_event_id):
+        """Returns the information of tv program with the specified
+        broadcast event ID.
+
+        :param broadcast_event_id: The area ID or name of the broadcasting area.
+        :type broadcast_event_id: str
+        """
+        query_params = {
+            'broadcastEventId': broadcast_event_id,
+            'key': self.api_key,
+        }
+        url = self._build_url('papiBroadcastEventTv', query_params)
+
+        response = requests.get(url)
+
+        return response.json()
+
     def pg_date_radio(self, area, service, date):
         """Returns radio programs with the specified area, service and date.
 
